@@ -89,7 +89,7 @@ export const generateCard = () => ({
   duration: `${getRandomInteger(1, 2)}h ${getRandomInteger(0, 59)}m`,
   genre: generateGenre(),
   comments: new Array(getRandomInteger(0, 5)).fill(),
-  isWatchlist: false,
-  isHistory: false,
-  isFavorites: false,
+  isWatchlist: Boolean(getRandomInteger(0, 1)),
+  isHistory: Boolean(getRandomInteger(0, 1)),
+  isFavorite: Boolean(getRandomInteger(0, 1)),
 });

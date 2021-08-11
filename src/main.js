@@ -6,12 +6,14 @@ import {createCardsListsTemplate} from './view/cards-lists';
 import {createShowMoreButtonTemplate} from './view/show-more.js';
 import {createPopupTemplate} from './view/popup.js';
 import {generateCard} from './mock/card.js';
+import {generateFilter} from './mock/filter.js';
 
 const CARD_COUNT = 15;
 const CARD_COUNT_PER_STEP = 5;
 const CARD_COUNT_EXTRA = 2;
 
 const films = new Array(CARD_COUNT).fill().map(generateCard);
+const filters = generateFilter(films);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -22,7 +24,7 @@ const siteMainElement = document.querySelector('.main');
 const siteHeaderElement = document.querySelector('.header');
 
 render(siteHeaderElement, createUserRankTemplate(), 'beforeend');
-render(siteMainElement, createNavigationTemplate(), 'beforeend');
+render(siteMainElement, createNavigationTemplate(filters), 'beforeend');
 render(siteMainElement, createSortTemplate(), 'beforeend');
 render(siteMainElement, createCardsListsTemplate(), 'beforeend');
 
