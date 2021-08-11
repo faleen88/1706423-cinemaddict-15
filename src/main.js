@@ -7,7 +7,8 @@ import {createShowMoreButtonTemplate} from './view/show-more.js';
 import {createPopupTemplate} from './view/popup.js';
 import {generateCard} from './mock/card.js';
 
-const CARD_COUNT = 5;
+const CARD_COUNT = 15;
+const CARD_COUNT_PER_STEP = 5;
 const CARD_COUNT_EXTRA = 2;
 
 const films = new Array(CARD_COUNT).fill().map(generateCard);
@@ -29,7 +30,7 @@ const filmsList = siteMainElement.querySelector('.films-list');
 const filmsListContainer = siteMainElement.querySelector('.films-list__container');
 const filmsListsExtra = siteMainElement.querySelectorAll('.films-list--extra');
 
-for (let i = 0; i < CARD_COUNT; i++) {
+for (let i = 0; i < Math.min(films.length, CARD_COUNT_PER_STEP); i++) {
   render(filmsListContainer, createCardTemplate(films[i]), 'beforeend');
 }
 
@@ -40,5 +41,25 @@ filmsListsExtra.forEach((list) => {
   }
 });
 
-render(filmsList, createShowMoreButtonTemplate(), 'beforeend');
+if (films.length > CARD_COUNT_PER_STEP) {
+  let renderedCardCount = CARD_COUNT_PER_STEP;
+
+  render(filmsList, createShowMoreButtonTemplate(), 'beforeend');
+
+  const showMoreButton = filmsList.querySelector('.films-list__show-more');
+
+  showMoreButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    films
+      .slice(renderedCardCount, renderedCardCount + CARD_COUNT_PER_STEP)
+      .forEach((film) => render(filmsListContainer, createCardTemplate(film), 'beforeend'));
+
+    renderedCardCount += CARD_COUNT_PER_STEP;
+
+    if (renderedCardCount >= films.length) {
+      showMoreButton.remove();
+    }
+  });
+}
+
 render(siteBody, createPopupTemplate(), 'beforeend');
