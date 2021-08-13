@@ -38,9 +38,8 @@ const generateEmoji = () => {
   return emoji[randomIndex];
 };
 
-const generateDate = () => {
-  const maxDaysGap = 7;
-  const daysGap = getRandomInteger(-maxDaysGap, 0);
+export const generateDate = (minDaysGap, maxDaysGap) => {
+  const daysGap = getRandomInteger(minDaysGap, maxDaysGap);
 
   return dayjs().add(daysGap, 'day').toDate();
 };
@@ -48,6 +47,6 @@ const generateDate = () => {
 export const generateComment = () => ({
   author: generateAuthor(),
   text: generateText(),
-  emoji: `./images/emoji/${generateEmoji()}`,
-  date: generateDate(),
+  emoji: `images/emoji/${generateEmoji()}`,
+  date: generateDate(-7, 0),
 });

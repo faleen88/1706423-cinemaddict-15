@@ -7,7 +7,6 @@ import {createShowMoreButtonTemplate} from './view/show-more.js';
 import {createPopupTemplate} from './view/popup.js';
 import {generateCard} from './mock/card.js';
 import {generateFilter} from './mock/filter.js';
-import './mock/comment.js';
 
 const CARD_COUNT = 15;
 const CARD_COUNT_PER_STEP = 5;
@@ -65,4 +64,4 @@ if (films.length > CARD_COUNT_PER_STEP) {
   });
 }
 
-render(siteBody, createPopupTemplate(), 'beforeend');
+render(siteBody, createPopupTemplate(films[0]), 'beforeend');

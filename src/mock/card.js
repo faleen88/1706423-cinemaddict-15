@@ -1,5 +1,5 @@
 import {getRandomInteger, getRandomPositiveFloat} from './util.js';
-import {generateComment} from './comment.js';
+import {generateComment, generateDate} from './comment.js';
 
 const generateTitle = () => {
   const titles = [
@@ -51,6 +51,12 @@ const generateDescription = () => {
   return filmDescription;
 };
 
+const generatezMinAge = () => {
+  const ageLimit = getRandomInteger(0, 18);
+
+  return (ageLimit === 0) ? ageLimit : `${ageLimit}+`;
+};
+
 const generateGenre = () => {
   const genres = [
     'Musical',
@@ -58,6 +64,10 @@ const generateGenre = () => {
     'Drama',
     'Comedy',
     'Cartoon',
+    'Film-Noir',
+    'Mystery',
+    'Detective',
+    'Horror',
   ];
 
   const randomIndex = getRandomInteger(0, genres.length - 1);
@@ -65,14 +75,63 @@ const generateGenre = () => {
   return genres[randomIndex];
 };
 
+const generatePerson = () => {
+  const persons = [
+    'Anthony Mann',
+    'Anne Wigton',
+    'Heinz Herald',
+    'Richard Weil',
+    'Erich von Stroheim',
+    'Mary Beth Hughes',
+    'Dan Duryea',
+  ];
+
+  const randomIndex = getRandomInteger(0, persons.length - 1);
+
+  return persons[randomIndex];
+};
+
+const generateCountry = () => {
+  const countries = [
+    'USA',
+    'Russia',
+    'France',
+    'Germany',
+    'Japan',
+    'China',
+  ];
+
+  const randomIndex = getRandomInteger(0, countries.length - 1);
+
+  return countries[randomIndex];
+};
+
+const generateDuration = () => {
+  const randomDuration = getRandomInteger(1, 180);
+
+  if (randomDuration > 59) {
+    const hour = Math.trunc(randomDuration / 60);
+    const minute = randomDuration % 60;
+    return `${hour}h ${minute}m`;
+  } else {
+    return `${randomDuration}m`;
+  }
+};
+
 export const generateCard = () => ({
   title: generateTitle(),
-  posters: `./images/posters/${generatePosters()}`,
+  originalTitle: generateTitle(),
+  posters: `images/posters/${generatePosters()}`,
   description: generateDescription().join(' '),
   rating: getRandomPositiveFloat(0, 10),
-  productionYear: getRandomInteger(1900, 2000),
-  duration: `${getRandomInteger(1, 2)}h ${getRandomInteger(0, 59)}m`,
-  genre: generateGenre(),
+  minAge: generatezMinAge(),
+  director: generatePerson(),
+  writers: new Array(getRandomInteger(2, 3)).fill().map(generatePerson),
+  actors: new Array(getRandomInteger(2, 3)).fill().map(generatePerson),
+  releaseDate: generateDate(-36500, -7300),
+  duration:generateDuration(),
+  country: generateCountry(),
+  genres: new Array(getRandomInteger(1, 3)).fill().map(generateGenre),
   comments: new Array(getRandomInteger(0, 5)).fill().map(generateComment),
   isWatchlist: Boolean(getRandomInteger(0, 1)),
   isHistory: Boolean(getRandomInteger(0, 1)),
