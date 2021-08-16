@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {getRandomInteger} from './util.js';
+import {getRandomInteger} from '../utils.js';
 
 const generateAuthor = () => {
   const authors = [
