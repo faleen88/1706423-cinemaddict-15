@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {createElement} from '../utils.js';
 
 const createCommentItemTemplate = (comment) => {
   const {author, text, emoji, date} = comment;
@@ -22,7 +23,7 @@ const createCommentItemTemplate = (comment) => {
 
 const createGenreItemTemplate = (genre) => `<span class="film-details__genre">${genre}</span>`;
 
-export const createPopupTemplate = (card) => {
+const createPopupTemplate = (card) => {
   const {title, originalTitle, posters, description, rating, minAge, director, writers, actors, releaseDate, duration, country, genres, comments, isWatchlist, isHistory, isFavorite} = card;
 
   const commentItemsTemplate = comments
@@ -158,3 +159,26 @@ export const createPopupTemplate = (card) => {
     </form>
   </section>`;
 };
+
+export default class Popup {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createPopupTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

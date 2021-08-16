@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
+import {createElement} from '../utils.js';
 
-export const createCardTemplate = (card) => {
+const createCardTemplate = (card) => {
   const {title, posters, description, rating, releaseDate, duration, genres, comments, isWatchlist, isHistory, isFavorite} = card;
 
   const descriptionLimit = (description.length > 140) ? `${description.substr(0, 139)}...` : `${description}`;
@@ -35,3 +36,26 @@ export const createCardTemplate = (card) => {
     </div>
   </article>`;
 };
+
+export default class Card {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createCardTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
