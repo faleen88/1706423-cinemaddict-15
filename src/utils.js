@@ -16,7 +16,7 @@ export const getRandomPositiveFloat = (a, b, digits = 1) => {
   return result.toFixed(digits);
 };
 
-export const renderTemplate = (container, template) => {
+export const render = (container, template) => {
   container.append(template);
 };
 
