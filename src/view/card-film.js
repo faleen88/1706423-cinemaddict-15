@@ -1,10 +1,12 @@
 import dayjs from 'dayjs';
 import {createElement} from '../utils.js';
 
+const MAX_QUANTITY_SIGNS = 140;
+
 const createCardTemplate = (card) => {
   const {title, posters, description, rating, releaseDate, duration, genres, comments, isWatchlist, isHistory, isFavorite} = card;
 
-  const descriptionLimit = (description.length > 140) ? `${description.substr(0, 139)}...` : `${description}`;
+  const descriptionLimit = (description.length > MAX_QUANTITY_SIGNS) ? `${description.substr(0, 139)}...` : `${description}`;
 
   const watchlistClassName = isWatchlist
     ? 'film-card__controls-item--add-to-watchlist film-card__controls-item--active'

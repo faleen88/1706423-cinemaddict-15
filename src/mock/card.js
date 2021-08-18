@@ -1,5 +1,5 @@
 import {getRandomInteger, getRandomPositiveFloat} from '../utils.js';
-import {generateComment, generateDate} from './comment.js';
+import {generateDate} from './comment.js';
 
 const generateTitle = () => {
   const titles = [
@@ -118,7 +118,20 @@ const generateDuration = () => {
   }
 };
 
+const createIdList = () => {
+  const idList = [];
+  let id = 0;
+  while(idList.length < getRandomInteger(0, 5)){
+    id = getRandomInteger(1, 30);
+    if (idList.indexOf(id) === -1) {
+      idList.push(id);
+    }
+  }
+  return idList;
+};
+
 export const generateCard = () => ({
+  id: getRandomInteger(1, 30),
   title: generateTitle(),
   originalTitle: generateTitle(),
   posters: `images/posters/${generatePosters()}`,
@@ -132,7 +145,7 @@ export const generateCard = () => ({
   duration:generateDuration(),
   country: generateCountry(),
   genres: new Array(getRandomInteger(1, 3)).fill().map(generateGenre),
-  comments: new Array(getRandomInteger(0, 5)).fill().map(generateComment),
+  comments: createIdList(),
   isWatchlist: Boolean(getRandomInteger(0, 1)),
   isHistory: Boolean(getRandomInteger(0, 1)),
   isFavorite: Boolean(getRandomInteger(0, 1)),

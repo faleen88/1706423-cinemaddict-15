@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import {getRandomInteger} from '../utils.js';
 
+const QUANTITY_COMMENTS = 30;
+
 const generateAuthor = () => {
   const authors = [
     'John Doe',
@@ -44,9 +46,22 @@ export const generateDate = (minDaysGap, maxDaysGap) => {
   return dayjs().add(daysGap, 'day').toDate();
 };
 
-export const generateComment = () => ({
+export const generateComment = (number) => ({
+  id: number,
   author: generateAuthor(),
   text: generateText(),
   emoji: `images/emoji/${generateEmoji()}`,
   date: generateDate(-7, 0),
 });
+
+const generateCommentsList = () => {
+  const comments = [];
+  for (let i = 1; i <= QUANTITY_COMMENTS; i++) {
+    const count = i;
+    comments.push(generateComment(count));
+  }
+
+  return comments;
+};
+
+export const commentsList = generateCommentsList();

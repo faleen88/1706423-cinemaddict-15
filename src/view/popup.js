@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import {createElement} from '../utils.js';
+import {commentsList} from '../mock/comment.js';
 
 const createCommentItemTemplate = (comment) => {
   const {author, text, emoji, date} = comment;
@@ -26,12 +27,29 @@ const createGenreItemTemplate = (genre) => `<span class="film-details__genre">${
 const createPopupTemplate = (card) => {
   const {title, originalTitle, posters, description, rating, minAge, director, writers, actors, releaseDate, duration, country, genres, comments, isWatchlist, isHistory, isFavorite} = card;
 
-  const commentItemsTemplate = comments
-    .map((comment, index) => createCommentItemTemplate(comment, index === 0))
+  const filterCommentsList = (list) => {
+    const filteredCommentsList = [];
+
+    for (let i = 0; i < comments.length; i++) {
+      for (let j = 0; j < list.length; j++) {
+        if (list[j].id === comments[i]) {
+          filteredCommentsList.push(list[j]);
+          if (filteredCommentsList.length === comments.length) {
+            break;
+          }
+        }
+      }
+    }
+
+    return filteredCommentsList;
+  };
+
+  const commentItemsTemplate = filterCommentsList(commentsList)
+    .map((comment) => createCommentItemTemplate(comment))
     .join('');
 
   const genretItemsTemplate = genres
-    .map((genre, index) => createGenreItemTemplate(genre, index === 0))
+    .map((genre) => createGenreItemTemplate(genre))
     .join('');
 
   const correctValue = (genres.length === 1) ? 'Genre' : 'Genres';

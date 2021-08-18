@@ -68,7 +68,7 @@ const renderCardsLists = (cardsListsContainer, cardsList) => {
   const filmsListContainer = siteMainElement.querySelector('.films-list__container');
   const filmsListsExtra = siteMainElement.querySelectorAll('.films-list--extra');
 
-  if (films.length === 0) {
+  if (cardsList.length === 0) {
     render(filmsList, noCardComponent.getElement());
   } else {
 
@@ -94,7 +94,7 @@ const renderCardsLists = (cardsListsContainer, cardsList) => {
         evt.preventDefault();
         cardsList
           .slice(renderedCardCount, renderedCardCount + CARD_COUNT_PER_STEP)
-          .forEach((film) => renderCardFilm(filmsListContainer, film));
+          .forEach((card) => renderCardFilm(filmsListContainer, card));
 
         renderedCardCount += CARD_COUNT_PER_STEP;
 
