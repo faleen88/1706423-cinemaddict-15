@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {createElement} from '../utils.js';
+import AbstractView from './abstract.js';
 import {commentsList} from '../mock/comment.js';
 
 const createCommentItemTemplate = (comment) => {
@@ -178,25 +178,13 @@ const createPopupTemplate = (card) => {
   </section>`;
 };
 
-export default class Popup {
+export default class Popup extends AbstractView {
   constructor(card) {
+    super();
     this._card = card;
-    this._element = null;
   }
 
   getTemplate() {
     return createPopupTemplate(this._card);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
