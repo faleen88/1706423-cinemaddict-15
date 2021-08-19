@@ -1,9 +1,12 @@
 import dayjs from 'dayjs';
+import {createElement} from '../utils.js';
 
-export const createCardTemplate = (card) => {
+const MAX_QUANTITY_SIGNS = 140;
+
+const createCardTemplate = (card) => {
   const {title, posters, description, rating, releaseDate, duration, genres, comments, isWatchlist, isHistory, isFavorite} = card;
 
-  const descriptionLimit = (description.length > 140) ? `${description.substr(0, 139)}...` : `${description}`;
+  const descriptionLimit = (description.length > MAX_QUANTITY_SIGNS) ? `${description.substr(0, 139)}...` : `${description}`;
 
   const watchlistClassName = isWatchlist
     ? 'film-card__controls-item--add-to-watchlist film-card__controls-item--active'
@@ -35,3 +38,26 @@ export const createCardTemplate = (card) => {
     </div>
   </article>`;
 };
+
+export default class Card {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createCardTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
