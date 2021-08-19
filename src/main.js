@@ -30,7 +30,6 @@ const renderCardFilm = (cardListElement, card) => {
   const closePopup = () => {
     siteBody.removeChild(popupComponent.getElement());
     siteBody.classList.remove('hide-overflow');
-    popupComponent.getElement().querySelector('.film-details__close-btn').removeEventListener('click', onClickClosePopup); // eslint-disable-line no-use-before-define
     document.removeEventListener('keydown', onEscKeyDownClosePopap); // eslint-disable-line no-use-before-define
   };
 
@@ -48,13 +47,11 @@ const renderCardFilm = (cardListElement, card) => {
   const onClickOpenPopap = () => {
     siteBody.appendChild(popupComponent.getElement());
     siteBody.classList.add('hide-overflow');
-    popupComponent.getElement().querySelector('.film-details__close-btn').addEventListener('click', onClickClosePopup);
+    popupComponent.setClickClosePopupHandler(onClickClosePopup);
     document.addEventListener('keydown', onEscKeyDownClosePopap);
   };
 
-  cardComponent.getElement().querySelector('.film-card__poster').addEventListener('click', onClickOpenPopap);
-  cardComponent.getElement().querySelector('.film-card__title').addEventListener('click', onClickOpenPopap);
-  cardComponent.getElement().querySelector('.film-card__comments').addEventListener('click', onClickOpenPopap);
+  cardComponent.setCardClickHandler(onClickOpenPopap);
 };
 
 const renderCardsLists = (cardsListsContainer, cardsList) => {
@@ -88,10 +85,7 @@ const renderCardsLists = (cardsListsContainer, cardsList) => {
 
       render(filmsList, showMoreButtonComponent.getElement());
 
-      const showMoreButton = filmsList.querySelector('.films-list__show-more');
-
-      showMoreButton.addEventListener('click', (evt) => {
-        evt.preventDefault();
+      showMoreButtonComponent.setClickHandler(() => {
         cardsList
           .slice(renderedCardCount, renderedCardCount + CARD_COUNT_PER_STEP)
           .forEach((card) => renderCardFilm(filmsListContainer, card));
@@ -99,7 +93,8 @@ const renderCardsLists = (cardsListsContainer, cardsList) => {
         renderedCardCount += CARD_COUNT_PER_STEP;
 
         if (renderedCardCount >= cardsList.length) {
-          showMoreButton.remove();
+          showMoreButtonComponent.getElement().remove();
+          showMoreButtonComponent.removeElement();
         }
       });
     }
