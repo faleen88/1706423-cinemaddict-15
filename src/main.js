@@ -7,7 +7,7 @@ import ShowMoreButtonView from './view/show-more.js';
 import PopupView from './view/popup.js';
 import {generateCard} from './mock/card.js';
 import {generateFilter} from './mock/filter.js';
-import {render} from './utils.js';
+import {render, remove} from './utils/render.js';
 import NoCardView from './view/no-card.js';
 
 const CARD_COUNT = 15;
@@ -59,14 +59,14 @@ const renderCardsLists = (cardsListsContainer, cardsList) => {
   const noCardComponent = new NoCardView();
   const showMoreButtonComponent = new ShowMoreButtonView();
 
-  render(cardsListsContainer, cardsListsComponent.getElement());
+  render(cardsListsContainer, cardsListsComponent);
 
   const filmsList = siteMainElement.querySelector('.films-list');
   const filmsListContainer = siteMainElement.querySelector('.films-list__container');
   const filmsListsExtra = siteMainElement.querySelectorAll('.films-list--extra');
 
   if (cardsList.length === 0) {
-    render(filmsList, noCardComponent.getElement());
+    render(filmsList, noCardComponent);
   } else {
 
     for (let i = 0; i < Math.min(cardsList.length, CARD_COUNT_PER_STEP); i++) {
@@ -83,7 +83,7 @@ const renderCardsLists = (cardsListsContainer, cardsList) => {
     if (cardsList.length > CARD_COUNT_PER_STEP) {
       let renderedCardCount = CARD_COUNT_PER_STEP;
 
-      render(filmsList, showMoreButtonComponent.getElement());
+      render(filmsList, showMoreButtonComponent);
 
       showMoreButtonComponent.setClickHandler(() => {
         cardsList
@@ -93,16 +93,15 @@ const renderCardsLists = (cardsListsContainer, cardsList) => {
         renderedCardCount += CARD_COUNT_PER_STEP;
 
         if (renderedCardCount >= cardsList.length) {
-          showMoreButtonComponent.getElement().remove();
-          showMoreButtonComponent.removeElement();
+          remove(showMoreButtonComponent);
         }
       });
     }
   }
 };
 
-render(siteHeaderElement, new UserRankView().getElement());
-render(siteMainElement, new NavigationView(filters).getElement());
-render(siteMainElement, new SortView().getElement());
+render(siteHeaderElement, new UserRankView());
+render(siteMainElement, new NavigationView(filters));
+render(siteMainElement, new SortView());
 
 renderCardsLists(siteMainElement, films);

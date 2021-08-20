@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomPositiveFloat} from '../utils.js';
+import {getRandomInteger, getRandomPositiveFloat} from '../utils/common.js';
 import {generateDate} from './comment.js';
 
 const generateTitle = () => {
