@@ -1,5 +1,5 @@
 import {getRandomInteger, getRandomPositiveFloat} from '../utils/common.js';
-import {generateDate} from './comment.js';
+import {generateDate, commentsList} from './comment.js';
 
 const generateTitle = () => {
   const titles = [
@@ -118,11 +118,12 @@ const generateDuration = () => {
   }
 };
 
-const createIdList = () => {
+const createIdList = (comments) => {
   const idList = [];
   let id = 0;
   while(idList.length < getRandomInteger(0, 5)){
-    id = getRandomInteger(1, 30);
+    const randomIndex = getRandomInteger(0, comments.length - 1);
+    id = comments[randomIndex].id;
     if (idList.indexOf(id) === -1) {
       idList.push(id);
     }
@@ -145,7 +146,7 @@ export const generateCard = () => ({
   duration:generateDuration(),
   country: generateCountry(),
   genres: new Array(getRandomInteger(1, 3)).fill().map(generateGenre),
-  comments: createIdList(),
+  comments: createIdList(commentsList),
   isWatchlist: Boolean(getRandomInteger(0, 1)),
   isHistory: Boolean(getRandomInteger(0, 1)),
   isFavorite: Boolean(getRandomInteger(0, 1)),

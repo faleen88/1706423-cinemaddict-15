@@ -27,24 +27,8 @@ const createGenreItemTemplate = (genre) => `<span class="film-details__genre">${
 const createPopupTemplate = (card) => {
   const {title, originalTitle, posters, description, rating, minAge, director, writers, actors, releaseDate, duration, country, genres, comments, isWatchlist, isHistory, isFavorite} = card;
 
-  const filterCommentsList = (list) => {
-    const filteredCommentsList = [];
-
-    for (let i = 0; i < comments.length; i++) {
-      for (let j = 0; j < list.length; j++) {
-        if (list[j].id === comments[i]) {
-          filteredCommentsList.push(list[j]);
-          if (filteredCommentsList.length === comments.length) {
-            break;
-          }
-        }
-      }
-    }
-
-    return filteredCommentsList;
-  };
-
-  const commentItemsTemplate = filterCommentsList(commentsList)
+  const commentItemsTemplate = commentsList
+    .filter((comment) => comments.includes(comment.id))
     .map((comment) => createCommentItemTemplate(comment))
     .join('');
 

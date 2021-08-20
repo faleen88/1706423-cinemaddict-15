@@ -30,28 +30,28 @@ const renderCardFilm = (cardListElement, card) => {
   const closePopup = () => {
     siteBody.removeChild(popupComponent.getElement());
     siteBody.classList.remove('hide-overflow');
-    document.removeEventListener('keydown', onEscKeyDownClosePopap); // eslint-disable-line no-use-before-define
+    document.removeEventListener('keydown', onEscKeyDownClosePopup); // eslint-disable-line no-use-before-define
   };
 
   const onClickClosePopup = () => {
     closePopup();
   };
 
-  const onEscKeyDownClosePopap = (evt) => {
+  const onEscKeyDownClosePopup = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
       closePopup();
     }
   };
 
-  const onClickOpenPopap = () => {
+  const onClickOpenPopup = () => {
     siteBody.appendChild(popupComponent.getElement());
     siteBody.classList.add('hide-overflow');
     popupComponent.setClickClosePopupHandler(onClickClosePopup);
-    document.addEventListener('keydown', onEscKeyDownClosePopap);
+    document.addEventListener('keydown', onEscKeyDownClosePopup);
   };
 
-  cardComponent.setCardClickHandler(onClickOpenPopap);
+  cardComponent.setCardClickHandler(onClickOpenPopup);
 };
 
 const renderCardsLists = (cardsListsContainer, cardsList) => {
