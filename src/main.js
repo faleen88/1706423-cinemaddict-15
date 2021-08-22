@@ -7,7 +7,7 @@ import ShowMoreButtonView from './view/show-more.js';
 import PopupView from './view/popup.js';
 import {generateCard} from './mock/card.js';
 import {generateFilter} from './mock/filter.js';
-import {render} from './utils.js';
+import {render, remove} from './utils/render.js';
 import NoCardView from './view/no-card.js';
 
 const CARD_COUNT = 15;
@@ -30,31 +30,28 @@ const renderCardFilm = (cardListElement, card) => {
   const closePopup = () => {
     siteBody.removeChild(popupComponent.getElement());
     siteBody.classList.remove('hide-overflow');
-    popupComponent.getElement().querySelector('.film-details__close-btn').removeEventListener('click', onClickClosePopup); // eslint-disable-line no-use-before-define
-    document.removeEventListener('keydown', onEscKeyDownClosePopap); // eslint-disable-line no-use-before-define
+    document.removeEventListener('keydown', onEscKeyDownClosePopup); // eslint-disable-line no-use-before-define
   };
 
   const onClickClosePopup = () => {
     closePopup();
   };
 
-  const onEscKeyDownClosePopap = (evt) => {
+  const onEscKeyDownClosePopup = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
       closePopup();
     }
   };
 
-  const onClickOpenPopap = () => {
+  const onClickOpenPopup = () => {
     siteBody.appendChild(popupComponent.getElement());
     siteBody.classList.add('hide-overflow');
-    popupComponent.getElement().querySelector('.film-details__close-btn').addEventListener('click', onClickClosePopup);
-    document.addEventListener('keydown', onEscKeyDownClosePopap);
+    popupComponent.setClickClosePopupHandler(onClickClosePopup);
+    document.addEventListener('keydown', onEscKeyDownClosePopup);
   };
 
-  cardComponent.getElement().querySelector('.film-card__poster').addEventListener('click', onClickOpenPopap);
-  cardComponent.getElement().querySelector('.film-card__title').addEventListener('click', onClickOpenPopap);
-  cardComponent.getElement().querySelector('.film-card__comments').addEventListener('click', onClickOpenPopap);
+  cardComponent.setCardClickHandler(onClickOpenPopup);
 };
 
 const renderCardsLists = (cardsListsContainer, cardsList) => {
@@ -62,14 +59,14 @@ const renderCardsLists = (cardsListsContainer, cardsList) => {
   const noCardComponent = new NoCardView();
   const showMoreButtonComponent = new ShowMoreButtonView();
 
-  render(cardsListsContainer, cardsListsComponent.getElement());
+  render(cardsListsContainer, cardsListsComponent);
 
   const filmsList = siteMainElement.querySelector('.films-list');
   const filmsListContainer = siteMainElement.querySelector('.films-list__container');
   const filmsListsExtra = siteMainElement.querySelectorAll('.films-list--extra');
 
   if (cardsList.length === 0) {
-    render(filmsList, noCardComponent.getElement());
+    render(filmsList, noCardComponent);
   } else {
 
     for (let i = 0; i < Math.min(cardsList.length, CARD_COUNT_PER_STEP); i++) {
@@ -86,12 +83,9 @@ const renderCardsLists = (cardsListsContainer, cardsList) => {
     if (cardsList.length > CARD_COUNT_PER_STEP) {
       let renderedCardCount = CARD_COUNT_PER_STEP;
 
-      render(filmsList, showMoreButtonComponent.getElement());
+      render(filmsList, showMoreButtonComponent);
 
-      const showMoreButton = filmsList.querySelector('.films-list__show-more');
-
-      showMoreButton.addEventListener('click', (evt) => {
-        evt.preventDefault();
+      showMoreButtonComponent.setClickHandler(() => {
         cardsList
           .slice(renderedCardCount, renderedCardCount + CARD_COUNT_PER_STEP)
           .forEach((card) => renderCardFilm(filmsListContainer, card));
@@ -99,15 +93,15 @@ const renderCardsLists = (cardsListsContainer, cardsList) => {
         renderedCardCount += CARD_COUNT_PER_STEP;
 
         if (renderedCardCount >= cardsList.length) {
-          showMoreButton.remove();
+          remove(showMoreButtonComponent);
         }
       });
     }
   }
 };
 
-render(siteHeaderElement, new UserRankView().getElement());
-render(siteMainElement, new NavigationView(filters).getElement());
-render(siteMainElement, new SortView().getElement());
+render(siteHeaderElement, new UserRankView());
+render(siteMainElement, new NavigationView(filters));
+render(siteMainElement, new SortView());
 
 renderCardsLists(siteMainElement, films);

@@ -15,14 +15,3 @@ export const getRandomPositiveFloat = (a, b, digits = 1) => {
 
   return result.toFixed(digits);
 };
-
-export const render = (container, template) => {
-  container.append(template);
-};
-
-export const createElement = (template) => {
-  const newElement = document.createElement('div');
-  newElement.innerHTML = template;
-
-  return newElement.firstChild;
-};

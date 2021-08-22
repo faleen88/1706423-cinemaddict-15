@@ -1,12 +1,12 @@
 import dayjs from 'dayjs';
-import {createElement} from '../utils.js';
+import AbstractView from './abstract.js';
 
 const MAX_QUANTITY_SIGNS = 140;
 
 const createCardTemplate = (card) => {
   const {title, posters, description, rating, releaseDate, duration, genres, comments, isWatchlist, isHistory, isFavorite} = card;
 
-  const descriptionLimit = (description.length > MAX_QUANTITY_SIGNS) ? `${description.substr(0, 139)}...` : `${description}`;
+  const descriptionLimit = (description.length > MAX_QUANTITY_SIGNS) ? `${description.substr(0, MAX_QUANTITY_SIGNS - 1)}...` : `${description}`;
 
   const watchlistClassName = isWatchlist
     ? 'film-card__controls-item--add-to-watchlist film-card__controls-item--active'
@@ -39,25 +39,27 @@ const createCardTemplate = (card) => {
   </article>`;
 };
 
-export default class Card {
+export default class Card extends AbstractView {
   constructor(card) {
+    super();
     this._card = card;
-    this._element = null;
+
+    this._cardClickHandler = this._cardClickHandler.bind(this);
   }
 
   getTemplate() {
     return createCardTemplate(this._card);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _cardClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.cardClick();
   }
 
-  removeElement() {
-    this._element = null;
+  setCardClickHandler(callback) {
+    this._callback.cardClick = callback;
+    this.getElement().querySelector('.film-card__poster').addEventListener('click', this._cardClickHandler);
+    this.getElement().querySelector('.film-card__title').addEventListener('click', this._cardClickHandler);
+    this.getElement().querySelector('.film-card__comments').addEventListener('click', this._cardClickHandler);
   }
 }
