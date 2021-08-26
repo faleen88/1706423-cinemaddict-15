@@ -1,5 +1,6 @@
 import {getRandomInteger, getRandomPositiveFloat} from '../utils/common.js';
 import {generateDate, commentsList} from './comment.js';
+import {nanoid} from 'nanoid';
 
 const generateTitle = () => {
   const titles = [
@@ -132,7 +133,7 @@ const createIdList = (comments) => {
 };
 
 export const generateCard = () => ({
-  id: getRandomInteger(1, 30),
+  id: nanoid(),
   title: generateTitle(),
   originalTitle: generateTitle(),
   posters: `images/posters/${generatePosters()}`,
