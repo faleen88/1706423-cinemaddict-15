@@ -23,6 +23,7 @@ export default class MovieList {
     this._showMoreButtonComponent = new ShowMoreButtonView();
 
     this._handleCardChange = this._handleCardChange.bind(this);
+    this._handleModeChange = this._handleModeChange.bind(this);
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
   }
 
@@ -36,13 +37,17 @@ export default class MovieList {
     this._renderMovieList();
   }
 
+  _handleModeChange() {
+    this._moviePresenter.forEach((presenter) => presenter.resetView());
+  }
+
   _handleCardChange(updatedCard) {
     this._cardsList = updateItem(this._cardsList, updatedCard);
     this._moviePresenter.get(updatedCard.id).init(updatedCard);
   }
 
   _renderCard(card) {
-    const moviePresenter = new MoviePresenter(this._filmListComponent, this._siteContainer, this._handleCardChange);
+    const moviePresenter = new MoviePresenter(this._filmListComponent, this._siteContainer, this._handleCardChange, this._handleModeChange);
     moviePresenter.init(card);
     this._moviePresenter.set(card.id, moviePresenter);
   }

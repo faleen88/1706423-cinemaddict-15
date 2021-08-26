@@ -2,14 +2,21 @@ import CardView from '../view/card-film.js';
 import PopupView from '../view/popup.js';
 import {render, remove, replace} from '../utils/render.js';
 
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  POPUP: 'POPUP',
+};
+
 export default class Movie {
-  constructor(filmListContainer, siteContainer, changeData) {
+  constructor(filmListContainer, siteContainer, changeData, changeMode) {
     this._filmListContainer = filmListContainer;
     this._siteContainer = siteContainer;
     this._changeData = changeData;
+    this._changeMode = changeMode;
 
     this._cardComponent = null;
     this._popupComponent = null;
+    this._mode = Mode.DEFAULT;
 
     this._handleClickOpenPopup = this._handleClickOpenPopup.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
@@ -43,11 +50,11 @@ export default class Movie {
       return;
     }
 
-    if (this._filmListContainer.getElement().contains(prevCardComponent.getElement())) {
+    if (this._mode === Mode.DEFAULT) {
       replace(this._cardComponent, prevCardComponent);
     }
 
-    if (this._siteContainer.contains(prevPopupComponent.getElement())) {
+    if (this._mode === Mode.POPUP) {
       replace(this._popupComponent, prevPopupComponent);
     }
 
@@ -60,16 +67,24 @@ export default class Movie {
     remove(this._popupComponent);
   }
 
+  resetView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._closePopup();
+    }
+  }
+
   _handleClickOpenPopup() {
     this._siteContainer.appendChild(this._popupComponent.getElement());
     this._siteContainer.classList.add('hide-overflow');
     document.addEventListener('keydown', this._escKeyDownHandler);
+    this._changeMode();
+    this._mode = Mode.POPUP;
   }
 
   _closePopup() {
     this._siteContainer.removeChild(this._popupComponent.getElement());
-    this._siteContainer.classList.remove('hide-overflow');
     document.removeEventListener('keydown', this._escKeyDownHandler);
+    this._mode = Mode.DEFAULT;
   }
 
   _escKeyDownHandler(evt) {
@@ -81,6 +96,7 @@ export default class Movie {
 
   _handleClickClosePopup() {
     this._closePopup();
+    this._siteContainer.classList.remove('hide-overflow');
   }
 
   _handleWatchlistClick() {
