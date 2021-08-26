@@ -12,7 +12,7 @@ const CARD_COUNT = 15;
 const films = new Array(CARD_COUNT).fill().map(generateCard);
 const filters = generateFilter(films);
 
-//const siteBody = document.querySelector('body');
+const siteBody = document.querySelector('body');
 const siteMainElement = document.querySelector('.main');
 const siteHeaderElement = document.querySelector('.header');
 /*
@@ -23,7 +23,7 @@ filmsListsExtra.forEach((list) => {
   }
 });
 */
-const movieListPresenter = new MovieListPresenter(siteMainElement);
+const movieListPresenter = new MovieListPresenter(siteMainElement, siteBody);
 
 render(siteHeaderElement, new UserRankView());
 render(siteMainElement, new NavigationView(filters));

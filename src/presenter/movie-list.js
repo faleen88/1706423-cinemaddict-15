@@ -3,16 +3,16 @@ import CardsListView from '../view/cards-list';
 import FilmListView from '../view/films-container.js';
 import ShowMoreButtonView from '../view/show-more.js';
 import NoCardView from '../view/no-card.js';
-import CardView from '../view/card-film.js';
-import PopupView from '../view/popup.js';
 import {render, remove} from '../utils/render.js';
+import MoviePresenter from './movie.js';
 
 const CARD_COUNT_PER_STEP = 5;
 
 export default class MovieList {
-  constructor(movieListContainer) {
+  constructor(movieListContainer, siteContainer) {
     this._movieListContainer = movieListContainer;
     this._renderedCardCount = CARD_COUNT_PER_STEP;
+    this._siteContainer = siteContainer;
 
     this._cardsListsComponent = new CardsListsView();
     this._cardsListComponent = new CardsListView();
@@ -34,37 +34,8 @@ export default class MovieList {
   }
 
   _renderCard(card) {
-    this._cardComponent = new CardView(card);
-    this._popupComponent = new PopupView(card);
-
-    render(this._filmListComponent, this._cardComponent);
-  /*
-    const closePopup = () => {
-      siteBody.removeChild(this._popupComponent.getElement());
-      siteBody.classList.remove('hide-overflow');
-      document.removeEventListener('keydown', onEscKeyDownClosePopup); // eslint-disable-line no-use-before-define
-    };
-
-    const onClickClosePopup = () => {
-      closePopup();
-    };
-
-    const onEscKeyDownClosePopup = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        closePopup();
-      }
-    };
-
-    const onClickOpenPopup = () => {
-      siteBody.appendChild(this._popupComponent.getElement());
-      siteBody.classList.add('hide-overflow');
-      this._popupComponent.setClickClosePopupHandler(onClickClosePopup);
-      document.addEventListener('keydown', onEscKeyDownClosePopup);
-    };
-
-    this._cardComponent.setCardClickHandler(onClickOpenPopup);
-    */
+    const moviePresenter = new MoviePresenter(this._filmListComponent, this._siteContainer);
+    moviePresenter.init(card);
   }
 
   _renderCards(from, to) {
