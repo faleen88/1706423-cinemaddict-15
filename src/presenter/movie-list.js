@@ -1,14 +1,13 @@
 import CardsListsView from '../view/cards-lists';
 import CardsListView from '../view/cards-list';
-import FilmListView from '../view/films-container.js';
+import FilmsContainerView from '../view/films-container.js';
 import ShowMoreButtonView from '../view/show-more.js';
 import NoCardView from '../view/no-card.js';
-import SortView from '../view/sort.js';
+import SortView, {SortType} from '../view/sort.js';
 import {render, remove} from '../utils/render.js';
 import {updateItem} from '../utils/common.js';
 import MoviePresenter from './movie.js';
 import dayjs from 'dayjs';
-import {SortType} from '../view/sort.js';
 
 const CARD_COUNT_PER_STEP = 5;
 
@@ -22,7 +21,7 @@ export default class MovieList {
 
     this._cardsListsComponent = new CardsListsView();
     this._cardsListComponent = new CardsListView();
-    this._filmListComponent = new FilmListView();
+    this._filmsContainerComponent = new FilmsContainerView();
     this._noCardComponent = new NoCardView();
     this._showMoreButtonComponent = new ShowMoreButtonView();
     this._sortComponent = new SortView();
@@ -41,7 +40,7 @@ export default class MovieList {
 
     render(this._movieListContainer, this._cardsListsComponent);
     render(this._cardsListsComponent, this._cardsListComponent);
-    render(this._cardsListComponent, this._filmListComponent);
+    render(this._cardsListComponent, this._filmsContainerComponent);
 
     this._renderMovieList();
   }
@@ -87,7 +86,7 @@ export default class MovieList {
   }
 
   _renderCard(card) {
-    const moviePresenter = new MoviePresenter(this._filmListComponent, this._siteContainer, this._handleCardChange, this._handleModeChange);
+    const moviePresenter = new MoviePresenter(this._filmsContainerComponent, this._siteContainer, this._handleCardChange, this._handleModeChange);
     moviePresenter.init(card);
     this._moviePresenter.set(card.id, moviePresenter);
   }
