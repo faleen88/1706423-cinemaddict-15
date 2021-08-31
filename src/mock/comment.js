@@ -46,7 +46,7 @@ export const generateDate = (minDaysGap, maxDaysGap) => {
   return dayjs().add(daysGap, 'day').toDate();
 };
 
-export const generateComment = (number) => ({
+const generateComment = (number) => ({
   id: number,
   author: generateAuthor(),
   text: generateText(),
