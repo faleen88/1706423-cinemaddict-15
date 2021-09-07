@@ -82,6 +82,7 @@ export default class Movie {
   }
 
   _closePopup() {
+    this._popupComponent.reset(this._card);
     this._siteContainer.removeChild(this._popupComponent.getElement());
     document.removeEventListener('keydown', this._escKeyDownHandler);
     this._mode = Mode.DEFAULT;

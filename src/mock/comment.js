@@ -49,7 +49,7 @@ export const generateDate = (minDaysGap, maxDaysGap) => {
 const generateComment = (number) => ({
   id: number,
   author: generateAuthor(),
-  text: generateText(),
+  textComment: generateText(),
   emoji: `images/emoji/${generateEmoji()}`,
   date: generateDate(-7, 0),
 });
