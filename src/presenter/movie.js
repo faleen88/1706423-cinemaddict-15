@@ -40,19 +40,14 @@ export default class Movie {
     this._cardComponent.setWatchedClickHandler(this._handleWatchedClick);
     this._cardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
-    this._popupComponent.setClickClosePopupHandler(this._handleClickClosePopup);
-    this._popupComponent.setWatchlistClickHandler(this._handleWatchlistClick);
-    this._popupComponent.setWatchedClickHandler(this._handleWatchedClick);
-    this._popupComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._setPopapHandlers();
 
     if (prevCardComponent === null || prevPopupComponent === null) {
       render(this._filmListContainer, this._cardComponent);
       return;
     }
 
-    if (this._mode === Mode.DEFAULT) {
-      replace(this._cardComponent, prevCardComponent);
-    }
+    replace(this._cardComponent, prevCardComponent);
 
     if (this._mode === Mode.POPUP) {
       replace(this._popupComponent, prevPopupComponent);
@@ -73,18 +68,27 @@ export default class Movie {
     }
   }
 
+  _setPopapHandlers() {
+    this._popupComponent.setClickClosePopupHandler(this._handleClickClosePopup);
+    this._popupComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+    this._popupComponent.setWatchedClickHandler(this._handleWatchedClick);
+    this._popupComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+  }
+
   _handleClickOpenPopup() {
-    this._siteContainer.appendChild(this._popupComponent.getElement());
+    this._changeMode();
+    render(this._siteContainer, this._popupComponent);
     this._siteContainer.classList.add('hide-overflow');
     document.addEventListener('keydown', this._escKeyDownHandler);
-    this._changeMode();
     this._mode = Mode.POPUP;
   }
 
   _closePopup() {
     this._popupComponent.reset(this._card);
-    this._siteContainer.removeChild(this._popupComponent.getElement());
+    remove(this._popupComponent);
+    this._siteContainer.classList.remove('hide-overflow');
     document.removeEventListener('keydown', this._escKeyDownHandler);
+    this._setPopapHandlers();
     this._mode = Mode.DEFAULT;
   }
 
@@ -97,10 +101,11 @@ export default class Movie {
 
   _handleClickClosePopup() {
     this._closePopup();
-    this._siteContainer.classList.remove('hide-overflow');
   }
 
   _handleWatchlistClick() {
+    this._scroll = this._popupComponent.saveScrollPopup();
+
     this._changeData(
       Object.assign(
         {},
@@ -110,9 +115,13 @@ export default class Movie {
         },
       ),
     );
+
+    this._popupComponent.loadScrollPopup(this._scroll);
   }
 
   _handleWatchedClick() {
+    this._scroll = this._popupComponent.saveScrollPopup();
+
     this._changeData(
       Object.assign(
         {},
@@ -122,9 +131,13 @@ export default class Movie {
         },
       ),
     );
+
+    this._popupComponent.loadScrollPopup(this._scroll);
   }
 
   _handleFavoriteClick() {
+    this._scroll = this._popupComponent.saveScrollPopup();
+
     this._changeData(
       Object.assign(
         {},
@@ -134,5 +147,7 @@ export default class Movie {
         },
       ),
     );
+
+    this._popupComponent.loadScrollPopup(this._scroll);
   }
 }

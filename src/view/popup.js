@@ -253,26 +253,42 @@ export default class Popup extends SmartView {
     this.getElement().querySelector('.film-details__emoji-list').addEventListener('change', this._emojiChoiceHandler);
   }
 
+  saveScrollPopup() {
+    return this.getElement().scrollTop;
+  }
+
+  loadScrollPopup(value) {
+    this.getElement().scrollTop = value;
+  }
+
   _ctrlEnterKeyDownHandler(evt) {
     if (evt.key === 'Enter' && evt.ctrlKey) {
       evt.preventDefault();
+
+      this._scroll = this.saveScrollPopup();
+
       this.updateData({
         isCommented: !this._data.isCommented,
       });
+
+      this.loadScrollPopup(this._scroll);
     }
   }
 
   _emojiChoiceHandler(evt) {
     evt.preventDefault();
 
+    this._scroll = this.saveScrollPopup();
+
     this.updateData({
       emoji: evt.target.value,
     });
 
     this._emojiChanged = new EmojiView(evt.target.value);
-
     render(this.getElement().querySelector('.film-details__add-emoji-label'), this._emojiChanged);
     evt.target.setAttribute('checked', true);
+
+    this.loadScrollPopup(this._scroll);
   }
 
   _formSubmitHandler(evt) {
@@ -295,7 +311,7 @@ export default class Popup extends SmartView {
     );
   }
 
-  static parseDataToPopap(data) {
+  static parseDataToPopup(data) {
     data = Object.assign({}, data);
 
     delete data.isCommented;
