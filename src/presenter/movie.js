@@ -1,6 +1,7 @@
 import CardView from '../view/card-film.js';
 import PopupView from '../view/popup.js';
 import {render, remove, replace} from '../utils/render.js';
+import {UserAction, UpdateType} from '../const.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -24,6 +25,7 @@ export default class Movie {
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this._handleFormSubmit = this._handleFormSubmit.bind(this);
   }
 
   init(card) {
@@ -39,6 +41,7 @@ export default class Movie {
     this._cardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     this._cardComponent.setWatchedClickHandler(this._handleWatchedClick);
     this._cardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._popupComponent.setFormSubmitHandler(this._handleFormSubmit);
 
     this._setPopapHandlers();
 
@@ -107,6 +110,8 @@ export default class Movie {
     this._scroll = this._popupComponent.saveScrollPopup();
 
     this._changeData(
+      UserAction.UPDATE_CARD,
+      UpdateType.MINOR,
       Object.assign(
         {},
         this._card,
@@ -123,6 +128,8 @@ export default class Movie {
     this._scroll = this._popupComponent.saveScrollPopup();
 
     this._changeData(
+      UserAction.UPDATE_CARD,
+      UpdateType.MINOR,
       Object.assign(
         {},
         this._card,
@@ -139,6 +146,8 @@ export default class Movie {
     this._scroll = this._popupComponent.saveScrollPopup();
 
     this._changeData(
+      UserAction.UPDATE_CARD,
+      UpdateType.MINOR,
       Object.assign(
         {},
         this._card,
@@ -149,5 +158,15 @@ export default class Movie {
     );
 
     this._popupComponent.loadScrollPopup(this._scroll);
+  }
+
+  _handleFormSubmit(card) {
+    this._changeData(card);
+    this._changeData(
+      UserAction.UPDATE_CARD,
+      UpdateType.MINOR,
+      card,
+    );
+    //render(this._siteContainer, this._popupComponent);
   }
 }

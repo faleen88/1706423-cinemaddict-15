@@ -3,7 +3,8 @@ import CardsListView from '../view/cards-list';
 import FilmsContainerView from '../view/films-container.js';
 import ShowMoreButtonView from '../view/show-more.js';
 import NoCardView from '../view/no-card.js';
-import SortView, {SortType} from '../view/sort.js';
+import SortView from '../view/sort.js';
+import {SortType} from '../const';
 import {render, remove} from '../utils/render.js';
 import MoviePresenter from './movie.js';
 import dayjs from 'dayjs';
@@ -26,10 +27,13 @@ export default class MovieList {
     this._showMoreButtonComponent = new ShowMoreButtonView();
     this._sortComponent = new SortView();
 
-    this._handleCardChange = this._handleCardChange.bind(this);
+    this._handleViewAction = this._handleViewAction.bind(this);
+    this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+
+    this._tasksModel.addObserver(this._handleModelEvent);
   }
 
   init() {
@@ -57,9 +61,20 @@ export default class MovieList {
     this._moviePresenter.forEach((presenter) => presenter.resetView());
   }
 
-  _handleCardChange(updatedCard) {
-    // Здесь будем вызывать обновление модели
-    this._moviePresenter.get(updatedCard.id).init(updatedCard);
+  _handleViewAction(actionType, updateType, update) {
+    console.log(actionType, updateType, update);
+    // Здесь будем вызывать обновление модели.
+    // actionType - действие пользователя, нужно чтобы понять, какой метод модели вызвать
+    // updateType - тип изменений, нужно чтобы понять, что после нужно обновить
+    // update - обновленные данные
+  }
+
+  _handleModelEvent(updateType, data) {
+    console.log(updateType, data);
+    // В зависимости от типа изменений решаем, что делать:
+    // - обновить часть списка (например, когда поменялось описание)
+    // - обновить список (например, когда задача ушла в архив)
+    // - обновить всю доску (например, при переключении фильтра)
   }
 
   _handleSortTypeChange(sortType) {
@@ -78,7 +93,7 @@ export default class MovieList {
   }
 
   _renderCard(card) {
-    const moviePresenter = new MoviePresenter(this._filmsContainerComponent, this._siteContainer, this._handleCardChange, this._handleModeChange);
+    const moviePresenter = new MoviePresenter(this._filmsContainerComponent, this._siteContainer, this._handleViewAction, this._handleModeChange);
     moviePresenter.init(card);
     this._moviePresenter.set(card.id, moviePresenter);
   }
