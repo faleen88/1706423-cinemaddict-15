@@ -12,7 +12,8 @@ import dayjs from 'dayjs';
 const CARD_COUNT_PER_STEP = 5;
 
 export default class MovieList {
-  constructor(movieListContainer, siteContainer) {
+  constructor(movieListContainer, siteContainer, moviesModel) {
+    this._moviesModel = moviesModel;
     this._movieListContainer = movieListContainer;
     this._renderedCardCount = CARD_COUNT_PER_STEP;
     this._siteContainer = siteContainer;
@@ -43,6 +44,10 @@ export default class MovieList {
     render(this._cardsListComponent, this._filmsContainerComponent);
 
     this._renderMovieList();
+  }
+
+  _getMovies() {
+    return this._moviesModel.getMovies();
   }
 
   _handleModeChange() {
