@@ -25,6 +25,6 @@ const movieListPresenter = new MovieListPresenter(siteMainElement, siteBody, mov
 render(siteHeaderElement, new UserRankView());
 render(siteMainElement, new NavigationView(filters));
 
-movieListPresenter.init(films);
+movieListPresenter.init();
 
 render(footerStatistics, new StatisticsView(CARD_COUNT));
