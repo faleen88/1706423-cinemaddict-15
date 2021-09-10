@@ -54,7 +54,7 @@ const generateComment = (number) => ({
   date: generateDate(-7, 0),
 });
 
-const generateCommentsList = () => {
+export const generateCommentsList = () => {
   const comments = [];
   for (let i = 1; i <= QUANTITY_COMMENTS; i++) {
     const count = i;
@@ -63,5 +63,3 @@ const generateCommentsList = () => {
 
   return comments;
 };
-
-export const commentsList = generateCommentsList();

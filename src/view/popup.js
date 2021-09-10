@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import SmartView from './smart.js';
-import {commentsList} from '../mock/comment.js';
+import {generateCommentsList} from '../mock/comment.js';
 import EmojiView from './emoji.js';
-import { render } from '../utils/render.js';
+import {render} from '../utils/render.js';
 
 const createCommentItemTemplate = (comment) => {
   const {author, textComment, emoji, date} = comment;
@@ -29,7 +29,7 @@ const createGenreItemTemplate = (genre) => `<span class="film-details__genre">${
 const createPopupTemplate = (data) => {
   const {title, originalTitle, posters, description, rating, minAge, director, writers, actors, releaseDate, duration, country, genres, comments, isWatchlist, isHistory, isFavorite, isCommented} = data;
 
-  const commentItemsTemplate = commentsList
+  const commentItemsTemplate = generateCommentsList()
     .filter((comment) => comments.includes(comment.id))
     .map((comment) => createCommentItemTemplate(comment))
     .join('');

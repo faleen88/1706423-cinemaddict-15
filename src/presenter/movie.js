@@ -41,7 +41,6 @@ export default class Movie {
     this._cardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     this._cardComponent.setWatchedClickHandler(this._handleWatchedClick);
     this._cardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
-    this._popupComponent.setFormSubmitHandler(this._handleFormSubmit);
 
     this._setPopapHandlers();
 
@@ -60,6 +59,12 @@ export default class Movie {
     remove(prevPopupComponent);
   }
 
+  renderPopup() {
+    if (this._mode === Mode.POPUP) {
+      render(this._siteContainer, this._popupComponent);
+    }
+  }
+
   destroy() {
     remove(this._cardComponent);
     remove(this._popupComponent);
@@ -76,6 +81,7 @@ export default class Movie {
     this._popupComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     this._popupComponent.setWatchedClickHandler(this._handleWatchedClick);
     this._popupComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._popupComponent.setFormSubmitHandler(this._handleFormSubmit);
   }
 
   _handleClickOpenPopup() {
@@ -111,7 +117,7 @@ export default class Movie {
 
     this._changeData(
       UserAction.UPDATE_CARD,
-      UpdateType.MINOR,
+      UpdateType.PATCH,
       Object.assign(
         {},
         this._card,
@@ -129,7 +135,7 @@ export default class Movie {
 
     this._changeData(
       UserAction.UPDATE_CARD,
-      UpdateType.MINOR,
+      UpdateType.PATCH,
       Object.assign(
         {},
         this._card,
@@ -147,7 +153,7 @@ export default class Movie {
 
     this._changeData(
       UserAction.UPDATE_CARD,
-      UpdateType.MINOR,
+      UpdateType.PATCH,
       Object.assign(
         {},
         this._card,
@@ -164,9 +170,9 @@ export default class Movie {
     this._changeData(card);
     this._changeData(
       UserAction.UPDATE_CARD,
-      UpdateType.MINOR,
+      UpdateType.PATCH,
       card,
     );
-    //render(this._siteContainer, this._popupComponent);
+    render(this._siteContainer, this._popupComponent);
   }
 }

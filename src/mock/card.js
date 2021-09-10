@@ -1,5 +1,5 @@
 import {getRandomInteger, getRandomPositiveFloat} from '../utils/common.js';
-import {generateDate, commentsList} from './comment.js';
+import {generateDate, generateCommentsList} from './comment.js';
 import {nanoid} from 'nanoid';
 
 const generateTitle = () => {
@@ -147,7 +147,7 @@ export const generateCard = () => ({
   duration:generateDuration(),
   country: generateCountry(),
   genres: new Array(getRandomInteger(1, 3)).fill().map(generateGenre),
-  comments: createIdList(commentsList),
+  comments: createIdList(generateCommentsList()),
   isWatchlist: Boolean(getRandomInteger(0, 1)),
   isHistory: Boolean(getRandomInteger(0, 1)),
   isFavorite: Boolean(getRandomInteger(0, 1)),
