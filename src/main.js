@@ -8,6 +8,7 @@ import StatisticsView from './view/footer-statistics.js';
 import MoviesModel from './model/movies.js';
 import CommentsModel from './model/comments.js';
 import {generateCommentsList} from './mock/comment.js';
+import FilterModel from './model/filter.js';
 
 const CARD_COUNT = 15;
 
@@ -20,6 +21,8 @@ moviesModel.setMovies(films);
 
 const commentsModel = new CommentsModel();
 commentsModel.setMovies(comments);
+
+const filterModel = new FilterModel();
 
 const siteBody = document.querySelector('body');
 const siteMainElement = document.querySelector('.main');
