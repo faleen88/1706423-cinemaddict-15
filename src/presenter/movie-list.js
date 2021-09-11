@@ -157,24 +157,6 @@ export default class MovieList {
     render(this._cardsListComponent, this._showMoreButtonComponent);
   }
 
-  _clearCardList() {
-    this._moviePresenter.forEach((presenter) => presenter.destroy());
-    this._moviePresenter.clear();
-    this._renderedCardCount = CARD_COUNT_PER_STEP;
-    remove(this._showMoreButtonComponent);
-  }
-
-  _renderCardList() {
-    const cardCount = this._getMovies().length;
-    const cards = this._getMovies().slice(0, Math.min(cardCount, CARD_COUNT_PER_STEP));
-
-    this._renderCards(cards);
-
-    if (cardCount > CARD_COUNT_PER_STEP) {
-      this._renderShowMoreButton();
-    }
-  }
-
   _renderMovieList() {
     const movies = this._getMovies();
     const cardCount = movies.length;

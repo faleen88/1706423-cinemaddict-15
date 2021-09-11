@@ -177,6 +177,7 @@ export default class Popup extends SmartView {
     this._ctrlEnterKeyDownHandler = this._ctrlEnterKeyDownHandler.bind(this);
     this._textCommentTextareaHandler = this._textCommentTextareaHandler.bind(this);
     this._emojiChoiceHandler = this._emojiChoiceHandler.bind(this);
+    this._commentDeleteClickHandler = this._commentDeleteClickHandler.bind(this);
 
     this._setInnerHandlers();
   }
@@ -245,6 +246,7 @@ export default class Popup extends SmartView {
     this.setWatchlistClickHandler(this._callback.watchlistClick);
     this.setWatchedClickHandler(this._callback.watchedClick);
     this.setFavoriteClickHandler(this._callback.favoriteClick);
+    this.setDeleteClickHandler(this._callback.deleteClick);
   }
 
   _setInnerHandlers() {
@@ -299,6 +301,18 @@ export default class Popup extends SmartView {
   setFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
     this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
+  }
+
+  _commentDeleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick(Popup.parseDataToPopup(this._data));
+  }
+
+  setDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement()
+      .querySelectorAll('.film-details__comment-delete')
+      .forEach((button) => button.addEventListener('click', this._commentDeleteClickHandler));
   }
 
   static parsePopupToData(card) {

@@ -26,6 +26,7 @@ export default class Movie {
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
   }
 
   init(card) {
@@ -82,6 +83,7 @@ export default class Movie {
     this._popupComponent.setWatchedClickHandler(this._handleWatchedClick);
     this._popupComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._popupComponent.setFormSubmitHandler(this._handleFormSubmit);
+    this._popupComponent.setDeleteClickHandler(this._handleDeleteClick);
   }
 
   _handleClickOpenPopup() {
@@ -167,12 +169,18 @@ export default class Movie {
   }
 
   _handleFormSubmit(card) {
-    this._changeData(card);
     this._changeData(
-      UserAction.UPDATE_CARD,
+      UserAction.ADD_COMMENT,
       UpdateType.PATCH,
       card,
     );
-    render(this._siteContainer, this._popupComponent);
+  }
+
+  _handleDeleteClick(card) {
+    this._changeData(
+      UserAction.DELETE_COMMENT,
+      UpdateType.PATCH,
+      card,
+    );
   }
 }
