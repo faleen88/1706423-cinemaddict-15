@@ -3,6 +3,7 @@ import SmartView from './smart.js';
 import {generateCommentsList} from '../mock/comment.js';
 import EmojiView from './emoji.js';
 import {render} from '../utils/render.js';
+import he from 'he';
 
 const createCommentItemTemplate = (comment) => {
   const {author, textComment, emoji, date} = comment;
@@ -13,7 +14,7 @@ const createCommentItemTemplate = (comment) => {
         <img src="${emoji}" width="55" height="55" alt="emoji-smile">
       </span>
       <div>
-        <p class="film-details__comment-text">${textComment}</p>
+        <p class="film-details__comment-text">${he.encode(textComment)}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${author}</span>
           <span class="film-details__comment-day">${dayjs(date).format('YYYY/MM/DD HH:MM')}</span>
