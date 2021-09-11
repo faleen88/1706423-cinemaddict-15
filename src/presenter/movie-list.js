@@ -4,7 +4,7 @@ import FilmsContainerView from '../view/films-container.js';
 import ShowMoreButtonView from '../view/show-more.js';
 import NoCardView from '../view/no-card.js';
 import SortView from '../view/sort.js';
-import {SortType, UpdateType, UserAction} from '../const';
+import {SortType, UpdateType, UserAction, FilterType} from '../const';
 import {render, remove} from '../utils/render.js';
 import MoviePresenter from './movie.js';
 import {sortCardReleaseDate, sortCardRating} from '../utils/card.js';
@@ -21,14 +21,16 @@ export default class MovieList {
     this._renderedCardCount = CARD_COUNT_PER_STEP;
     this._siteContainer = siteContainer;
     this._moviePresenter = new Map();
+    this._filterType = FilterType.ALL;
     this._currentSortType = SortType.DEFAULT;
+
+    this._sortComponent = null;
+    this._showMoreButtonComponent = null;
+    this._noCardComponent = null;
 
     this._cardsListsComponent = new CardsListsView();
     this._cardsListComponent = new CardsListView();
     this._filmsContainerComponent = new FilmsContainerView();
-    this._noCardComponent = new NoCardView();
-    this._sortComponent = null;
-    this._showMoreButtonComponent = null;
 
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
@@ -46,9 +48,9 @@ export default class MovieList {
   }
 
   _getMovies() {
-    const filterType = this._filterModel.getFilter();
+    this._filterType = this._filterModel.getFilter();
     const movies = this._moviesModel.getMovies();
-    const filtredMovies = filter[filterType](movies);
+    const filtredMovies = filter[this._filterType](movies);
 
     switch (this._currentSortType) {
       case SortType.DATE:
@@ -127,6 +129,7 @@ export default class MovieList {
   }
 
   _renderNoCards() {
+    this._noCardComponent = new NoCardView(this._filterType);
     render(this._cardsListComponent, this._noCardComponent);
   }
 
@@ -196,8 +199,11 @@ export default class MovieList {
     this._moviePresenter.clear();
 
     remove(this._sortComponent);
-    remove(this._noCardComponent);
     remove(this._showMoreButtonComponent);
+
+    if (this._noCardComponent) {
+      remove(this._noCardComponent);
+    }
 
     if (resetRenderedCardCount) {
       this._renderedCardCount = CARD_COUNT_PER_STEP;
