@@ -117,7 +117,7 @@ export default class Movie {
 
     this._changeData(
       UserAction.UPDATE_CARD,
-      UpdateType.PATCH,
+      UpdateType.MINOR,
       Object.assign(
         {},
         this._card,
@@ -135,7 +135,7 @@ export default class Movie {
 
     this._changeData(
       UserAction.UPDATE_CARD,
-      UpdateType.PATCH,
+      UpdateType.MINOR,
       Object.assign(
         {},
         this._card,
@@ -153,7 +153,7 @@ export default class Movie {
 
     this._changeData(
       UserAction.UPDATE_CARD,
-      UpdateType.PATCH,
+      UpdateType.MINOR,
       Object.assign(
         {},
         this._card,

@@ -8,13 +8,15 @@ import {SortType, UpdateType, UserAction} from '../const';
 import {render, remove} from '../utils/render.js';
 import MoviePresenter from './movie.js';
 import {sortCardReleaseDate, sortCardRating} from '../utils/card.js';
+import {filter} from '../utils/filter';
 
 const CARD_COUNT_PER_STEP = 5;
 
 export default class MovieList {
-  constructor(movieListContainer, siteContainer, moviesModel, commentsModel) {
+  constructor(movieListContainer, siteContainer, moviesModel, commentsModel, filterModel) {
     this._moviesModel = moviesModel;
     this._commentsModel = commentsModel;
+    this._filterModel = filterModel;
     this._movieListContainer = movieListContainer;
     this._renderedCardCount = CARD_COUNT_PER_STEP;
     this._siteContainer = siteContainer;
@@ -35,6 +37,8 @@ export default class MovieList {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
     this._moviesModel.addObserver(this._handleModelEvent);
+    this._commentsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
   }
 
   init() {
@@ -42,14 +46,18 @@ export default class MovieList {
   }
 
   _getMovies() {
+    const filterType = this._filterModel.getFilter();
+    const movies = this._moviesModel.getMovies();
+    const filtredMovies = filter[filterType](movies);
+
     switch (this._currentSortType) {
       case SortType.DATE:
-        return this._moviesModel.getMovies().slice().sort(sortCardReleaseDate);
+        return filtredMovies.sort(sortCardReleaseDate);
       case SortType.RATING:
-        return this._moviesModel.getMovies().slice().sort(sortCardRating);
+        return filtredMovies.sort(sortCardRating);
     }
 
-    return this._moviesModel.getMovies();
+    return filtredMovies;
   }
 
   _handleModeChange() {
