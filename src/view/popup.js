@@ -183,12 +183,6 @@ export default class Popup extends SmartView {
     this._setInnerHandlers();
   }
 
-  reset(card) {
-    this.updateData(
-      Popup.parsePopupToData(card),
-    );
-  }
-
   getTemplate() {
     return createPopupTemplate(this._data);
   }
@@ -196,6 +190,7 @@ export default class Popup extends SmartView {
   _clickClosePopupHandler(evt) {
     evt.preventDefault();
     this._callback.clickClosePopup();
+    this._setInnerHandlers();
   }
 
   setClickClosePopupHandler(callback) {

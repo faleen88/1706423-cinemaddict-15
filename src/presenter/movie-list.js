@@ -84,7 +84,6 @@ export default class MovieList {
     switch (updateType) {
       case UpdateType.PATCH:
         this._moviePresenter.get(data.id).init(data);
-        this._moviePresenter.get(data.id).renderPopup();
         break;
       case UpdateType.MINOR:
         this._clearMovieBoard();

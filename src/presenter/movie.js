@@ -43,7 +43,7 @@ export default class Movie {
     this._cardComponent.setWatchedClickHandler(this._handleWatchedClick);
     this._cardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
-    this._setPopapHandlers();
+    this._setPopupHandlers();
 
     if (prevCardComponent === null || prevPopupComponent === null) {
       render(this._filmListContainer, this._cardComponent);
@@ -60,12 +60,6 @@ export default class Movie {
     remove(prevPopupComponent);
   }
 
-  renderPopup() {
-    if (this._mode === Mode.POPUP) {
-      render(this._siteContainer, this._popupComponent);
-    }
-  }
-
   destroy() {
     remove(this._cardComponent);
     remove(this._popupComponent);
@@ -77,7 +71,7 @@ export default class Movie {
     }
   }
 
-  _setPopapHandlers() {
+  _setPopupHandlers() {
     this._popupComponent.setClickClosePopupHandler(this._handleClickClosePopup);
     this._popupComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     this._popupComponent.setWatchedClickHandler(this._handleWatchedClick);
@@ -95,11 +89,10 @@ export default class Movie {
   }
 
   _closePopup() {
-    this._popupComponent.reset(this._card);
     remove(this._popupComponent);
     this._siteContainer.classList.remove('hide-overflow');
     document.removeEventListener('keydown', this._escKeyDownHandler);
-    this._setPopapHandlers();
+    this._setPopupHandlers();
     this._mode = Mode.DEFAULT;
   }
 
